@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+	<!-- 产生zip文件的名字  -->
+	<id>binary</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<!-- 将全部依赖放到/lib目录下 -->
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/lib</outputDirectory>
+		</dependencySet>
+	</dependencySets>
+	<!-- 目录打包路径和排除路径配置  -->
+	<fileSets>
+		<fileSet>
+			<!-- 打包根目录文件夹内容 -->
+			<directory>${basedir}</directory>
+			<includes>
+				<include>config/**</include>
+				<include>bin/**</include>
+				<include>upload/**</include>
+				<include>hk/**</include>
+				<include>upgrade/**</include>
+				<include>temp/</include>
+				<include>shell/**</include>
+				<include>common/**</include>
+				<include>deploy/**</include>
+				<include>lib/**</include>
+				<!-- 
+				<include>src/main/java/**</include>
+				<include>src/main/resources/**</include>
+				<include>src/test/java/**</include>
+				<include>src/test/resources/**</include>
+				-->
+			</includes>
+			<!-- 排除根目录文件夹内容 -->
+			<excludes>
+				<exclude>target/**</exclude>
+				<exclude>.settings/**</exclude>
+				<exclude>.classpath</exclude>
+				<exclude>.project</exclude>
+			</excludes>
+		</fileSet>
+		<!-- 打包工程中/src/main/webaap文件夹内容到部署路径的根目录/webapp路径 -->
+		<fileSet>
+			<directory>${basedir}/web/webapps</directory>
+			<outputDirectory>/web/webapps</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>
