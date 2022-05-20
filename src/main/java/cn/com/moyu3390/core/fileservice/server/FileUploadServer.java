@@ -1,7 +1,5 @@
 package cn.com.moyu3390.core.fileservice.server;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import cn.com.moyu3390.core.fileservice.exception.FileServiceException;
 import io.netty.bootstrap.ServerBootstrap;
@@ -10,6 +8,9 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * 文件上传服务端 (单独启动使用此类，不可去除)
@@ -18,7 +19,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  *
  */
 public class FileUploadServer {
-	private static Logger	logger	= LogManager.getLogger(FileUploadServer.class);
+	private static Logger logger	= LoggerFactory.getLogger(FileUploadServer.class);
 	private int				port;
 	private String			bindHost;
 

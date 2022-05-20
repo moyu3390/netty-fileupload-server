@@ -6,9 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.alibaba.fastjson.JSON;
 
 import cn.com.moyu3390.core.fileservice.protocol.Constants;
@@ -22,6 +19,8 @@ import cn.com.moyu3390.core.fileservice.utils.MsgUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.socket.SocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 服务端上传文件Handler
@@ -30,7 +29,7 @@ import io.netty.channel.socket.SocketChannel;
  *
  */
 public class FileUploadServerHandler extends ChannelInboundHandlerAdapter {
-	private static Logger	logger		= LogManager.getLogger(FileUploadServerHandler.class);
+	private static Logger logger	= LoggerFactory.getLogger(FileUploadServer.class);
 	private String			fileDir;
 	private String			fileType	= "business_type";
 	private String			BaseDir		= UploadFileSavePath.save_path_temp_map.get(fileType);
@@ -58,7 +57,9 @@ public class FileUploadServerHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		// 数据格式验证
-		if (!(msg instanceof FileTransferProtocol)) return;
+		if (!(msg instanceof FileTransferProtocol)) {
+			return;
+		}
 
 		FileTransferProtocol fileTransferProtocol = (FileTransferProtocol) msg;
 		// 0传输文件'请求'、1文件传输'指令'、2文件传输'数据'
@@ -84,7 +85,7 @@ public class FileUploadServerHandler extends ChannelInboundHandlerAdapter {
 
 			// 发送信息
 			FileTransferProtocol sendFileTransferProtocol = MsgUtil.buildTransferInstruct(Constants.FileStatus.BEGIN,
-					fileDescInfo.getFileUrl(), 0l);
+					fileDescInfo.getFileUrl(), 0L);
 			ctx.writeAndFlush(sendFileTransferProtocol);
 			break;
 		case 2:
@@ -108,7 +109,9 @@ public class FileUploadServerHandler extends ChannelInboundHandlerAdapter {
 				// 把日志文件从临时目录中移走
 				String savePath = UploadFileSavePath.getSavePath(fileType, fileDir);
 				File saveDir = new File(savePath);
-				if (!saveDir.exists()) saveDir.mkdirs();
+				if (!saveDir.exists()){
+					saveDir.mkdirs();
+				}
 
 //				String saveUploadFilePath = savePath + File.separator + fileBurstData.getFileName();
 				Path saveUploadFilePath = Paths.get(savePath + File.separator + fileBurstData.getFileName());

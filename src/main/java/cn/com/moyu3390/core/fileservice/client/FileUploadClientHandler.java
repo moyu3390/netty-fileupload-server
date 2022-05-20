@@ -1,17 +1,17 @@
 package cn.com.moyu3390.core.fileservice.client;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import cn.com.moyu3390.core.fileservice.protocol.Constants;
 import cn.com.moyu3390.core.fileservice.protocol.FileBurstData;
 import cn.com.moyu3390.core.fileservice.protocol.FileBurstInstruct;
 import cn.com.moyu3390.core.fileservice.protocol.FileTransferProtocol;
+import cn.com.moyu3390.core.fileservice.server.FileUploadServer;
 import cn.com.moyu3390.core.fileservice.utils.FileUtil;
 import cn.com.moyu3390.core.fileservice.utils.MsgUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.socket.SocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 客户端上传文件handler
@@ -20,7 +20,7 @@ import io.netty.channel.socket.SocketChannel;
  *
  */
 public class FileUploadClientHandler extends ChannelInboundHandlerAdapter {
-	private static Logger logger = LogManager.getLogger(FileUploadClientHandler.class);
+	private static Logger logger	= LoggerFactory.getLogger(FileUploadServer.class);
 
 	/**
 	 * 当客户端主动链接服务端的链接后，这个通道就是活跃的了。也就是客户端与服务端建立了通信通道并且可以传输数据
@@ -45,7 +45,9 @@ public class FileUploadClientHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		// 数据格式验证
-		if (!(msg instanceof FileTransferProtocol)) return;
+		if (!(msg instanceof FileTransferProtocol)){
+			return;
+		}
 
 		FileTransferProtocol fileTransferProtocol = (FileTransferProtocol) msg;
 		// 0传输文件'请求'、1文件传输'指令'、2文件传输'数据'

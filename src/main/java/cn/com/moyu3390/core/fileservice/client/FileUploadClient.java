@@ -1,12 +1,6 @@
 package cn.com.moyu3390.core.fileservice.client;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import cn.com.moyu3390.core.fileservice.server.FileUploadServer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -15,9 +9,15 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class FileUploadClient {
-	private static Logger		logger			= LogManager.getLogger(FileUploadClientHandler.class);
+	private static Logger logger	= LoggerFactory.getLogger(FileUploadServer.class);
 	private String				serverIp;
 	private int					serverPort;
 	// 配置客户端NIO线程组
