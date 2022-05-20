@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -8,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>netty-fileupload-server</name>
-	<url>http://maven.apache.org</url>
+	<url>http://xxx.xxx.xxx.xxx:port/url</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,8 +17,8 @@
 		<maven.build.timestamp.format>yyyy_MM_dd</maven.build.timestamp.format>
 		<buliddate>${maven.build.timestamp}</buliddate>
 		<project.name>netty-fileupload-server</project.name>
-		<jdk.version>1.8</jdk.version>
-		<netty-version>4.1.44.Final</netty-version>
+		<jdk.version>11</jdk.version>
+		<netty-version>4.1.77.Final</netty-version>
 		<junit.skip>true</junit.skip>
 		<junit.version>4.13.1</junit.version>
 	</properties>
@@ -34,26 +35,31 @@
 			<artifactId>netty-all</artifactId>
 			<version>${netty-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-tcnative-boringssl-static</artifactId>
+			<version>2.0.52.Final</version>
+		</dependency>
 		<!-- Protostuff -->
 		<dependency>
 			<groupId>com.dyuproject.protostuff</groupId>
 			<artifactId>protostuff-core</artifactId>
-			<version>1.1.5</version>
+			<version>1.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dyuproject.protostuff</groupId>
 			<artifactId>protostuff-runtime</artifactId>
-			<version>1.1.5</version>
+			<version>1.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.objenesis</groupId>
 			<artifactId>objenesis</artifactId>
-			<version>2.6</version>
+			<version>3.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.35</version>
+			<version>2.0.3</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
 		<dependency>
@@ -69,7 +75,7 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.7</version>
+				<version>5.1.6</version>
 				<extensions>true</extensions>
 			</plugin>
 			<plugin>
@@ -90,7 +96,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.10.1</version>
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
@@ -101,14 +107,14 @@
 					<dependency>
 						<groupId>org.codehaus.plexus</groupId>
 						<artifactId>plexus-compiler-javac</artifactId>
-						<version>1.8.1</version>
+						<version>2.11.0</version>
 					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
+				<version>3.2.2</version>
 				<configuration>
 					<excludes>
 						<exclude>**/static/**</exclude>
@@ -117,8 +123,9 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2</version>
+				<version>3.3.0</version>
 				<configuration>
 					<finalName>${project.name}</finalName>
 					<descriptors>
@@ -140,17 +147,15 @@
 		</plugins>
 
 	</build>
-	
-	<distributionManagement>
-		<!-- <snapshotRepository>
-			<id>maven-releases</id>
-			<name>platform-nexus-snapshots</name>
-			<url>http://192.168.0.120:9181/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository> -->
+
+	<!--<distributionManagement>
+		&lt;!&ndash; <snapshotRepository> <id>maven-releases</id> <name>platform-nexus-snapshots</name>
+			<url>http://192.168.0.120:9181/nexus/content/repositories/snapshots/</url> 
+			</snapshotRepository> &ndash;&gt;
 		<repository>
 			<id>maven-releases</id>
 			<name>maven-releases</name>
 			<url>http://192.168.0.120:9181/repository/moyu3390/</url>
 		</repository>
-	</distributionManagement>
+	</distributionManagement>-->
 </project>

@@ -3,7 +3,7 @@
 	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
-	<!-- 产生zip文件的名字  -->
+	<!-- 产生zip文件的名字 -->
 	<id>binary</id>
 	<formats>
 		<format>zip</format>
@@ -14,7 +14,7 @@
 			<outputDirectory>/lib</outputDirectory>
 		</dependencySet>
 	</dependencySets>
-	<!-- 目录打包路径和排除路径配置  -->
+	<!-- 目录打包路径和排除路径配置 -->
 	<fileSets>
 		<fileSet>
 			<!-- 打包根目录文件夹内容 -->
@@ -30,12 +30,8 @@
 				<include>common/**</include>
 				<include>deploy/**</include>
 				<include>lib/**</include>
-				<!-- 
-				<include>src/main/java/**</include>
-				<include>src/main/resources/**</include>
-				<include>src/test/java/**</include>
-				<include>src/test/resources/**</include>
-				-->
+				<!-- <include>src/main/java/**</include> <include>src/main/resources/**</include> 
+					<include>src/test/java/**</include> <include>src/test/resources/**</include> -->
 			</includes>
 			<!-- 排除根目录文件夹内容 -->
 			<excludes>
