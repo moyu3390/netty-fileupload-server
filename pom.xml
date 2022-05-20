@@ -19,7 +19,7 @@
 		<jdk.version>1.8</jdk.version>
 		<netty-version>4.1.44.Final</netty-version>
 		<junit.skip>true</junit.skip>
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 	</properties>
 
 	<dependencies>
