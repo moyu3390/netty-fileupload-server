@@ -1,6 +1,6 @@
 package cn.com.moyu3390.core.fileservice.utils;
 
-import cn.com.moyu3390.core.fileservice.exception.FileServiceException;
+import cn.com.moyu3390.core.fileservice.file.exception.FileServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

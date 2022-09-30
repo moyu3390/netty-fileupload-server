@@ -10,8 +10,10 @@ import java.util.Arrays;
  * 近期优化
  */
 public class BufferedRandomAccessFile extends RandomAccessFile {
-    static final int LOG_BUFF_SZ = 16;                      // 64K buffer
+    static final int LOG_BUFF_SZ =  20;                      // 1M buffer
+    // 缓冲大小，位移结果为：2^LOG_BUFF_SZ（LOG_BUFF_SZ大小不能超过30，为31时，缓冲大小为负数Integer.Min_Value，大于31将超过Integer的最小边界）; 此处使用位移，提高计算效率
     public static final int BUFF_SZ = (1 << LOG_BUFF_SZ);
+    // 数据最低为边界：不超过缓存最大长度
     static final long BUFF_MASK = ~(((long) BUFF_SZ) - 1L);
 
     private String path;
@@ -20,13 +22,22 @@ public class BufferedRandomAccessFile extends RandomAccessFile {
      * This implementation is based on the buffer implementation in Modula-3's
      * "Rd", "Wr", "RdClass", and "WrClass" interfaces.
      */
+    // 是否为脏数据，表示缓存中数据只要被写过，就代表缓存中的数据为脏数据，
     private boolean dirty;                               // true iff unflushed bytes exist
+    // 需要同步
     private boolean syncNeeded;                          // dirty_ can be cleared by e.g. seek, so track sync separately
+    // 文件当前位置
     private long curr;                                // current position in file
+    // 缓存中的数据对应磁盘文件内容的数据位置：低位-高位
     private long lo, hi;                             // bounds on characters in "buff"
+    // 读写缓存
     private byte[] buff;                                // local buffer
+    // 数据最高位：最低位+缓存长度
     private long maxHi;                               // this.lo + this.buff.length
+    // 是否结束
     private boolean hiteof;                              // buffer contains last file block?
+
+    // 磁盘位置
     private long diskPos;                             // disk position
 
     /*
@@ -176,6 +187,7 @@ public class BufferedRandomAccessFile extends RandomAccessFile {
      */
     @Override
     public void seek(long pos) throws IOException {
+        // 当前读取数据的位置大于缓存最大位置或小于缓存最小位置，说明要读取的数据不在当前缓存中，需要重新填充数据
         if (pos >= this.hi || pos < this.lo) {
             // seeking outside of current buffer -- flush and read
             this.flushBuffer();
@@ -235,14 +247,17 @@ public class BufferedRandomAccessFile extends RandomAccessFile {
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
+        // 如果当前位置大于缓存最大位置，说明要读取的数据已不在当前缓存中，需要重新加载下一段数据至缓存
         if (this.curr >= this.hi) {
             // test for EOF
             // if (this.hi < this.maxHi) return -1;
+            // 是否已读至文件末尾
             if (this.hiteof) {
                 return -1;
             }
 
             // slow path -- read another buffer
+            // 重新移动文件指针位置，并刷新缓存、 填充缓存数据
             this.seek(this.curr);
             if (this.curr == this.hi) {
                 return -1;
@@ -297,12 +312,15 @@ public class BufferedRandomAccessFile extends RandomAccessFile {
      * the number of bytes written.
      */
     private int writeAtMost(byte[] b, int off, int len) throws IOException {
+        // 当前位置大于缓存最大位置时，需要重新定位，并填充缓存数据
         if (this.curr >= this.hi) {
+            // 如果当前文件已结束，并且缓存最大指针位置小于最大位置，改变缓存最大指针位置为最大位置
             if (this.hiteof && this.hi < this.maxHi) {
                 // at EOF -- bump "hi"
                 this.hi = this.maxHi;
             } else {
                 // slow path -- write current buffer; read next one
+                // 移动文件指针为当前位置。并刷新缓存、填充缓存数据
                 this.seek(this.curr);
                 if (this.curr == this.hi) {
                     // appending to EOF -- bump "hi"

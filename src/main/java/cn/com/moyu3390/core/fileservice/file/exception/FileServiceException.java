@@ -1,4 +1,4 @@
-package cn.com.moyu3390.core.fileservice.exception;
+package cn.com.moyu3390.core.fileservice.file.exception;
 
 public class FileServiceException extends RuntimeException {
 
