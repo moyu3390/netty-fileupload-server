@@ -10,7 +10,7 @@ import java.util.Arrays;
  * 近期优化
  */
 public class BufferedRandomAccessFile extends RandomAccessFile {
-    static final int LOG_BUFF_SZ =  20;                      // 1M buffer
+    static final int LOG_BUFF_SZ = 20;                      // 1M buffer
     // 缓冲大小，位移结果为：2^LOG_BUFF_SZ（LOG_BUFF_SZ大小不能超过30，为31时，缓冲大小为负数Integer.Min_Value，大于31将超过Integer的最小边界）; 此处使用位移，提高计算效率
     public static final int BUFF_SZ = (1 << LOG_BUFF_SZ);
     // 数据最低为边界：不超过缓存最大长度
@@ -37,8 +37,11 @@ public class BufferedRandomAccessFile extends RandomAccessFile {
     // 是否结束
     private boolean hiteof;                              // buffer contains last file block?
 
-    // 磁盘位置
+    // 文件位置
     private long diskPos;                             // disk position
+
+    protected long initfilelen;
+
 
     /*
      * To describe the above fields, we introduce the following abstractions for
@@ -80,6 +83,7 @@ public class BufferedRandomAccessFile extends RandomAccessFile {
     public BufferedRandomAccessFile(File file, String mode, int size) throws IOException {
         super(file, mode);
         path = file.getAbsolutePath();
+        this.initfilelen = super.length();
         this.init(size);
     }
 
@@ -333,6 +337,62 @@ public class BufferedRandomAccessFile extends RandomAccessFile {
         System.arraycopy(b, off, this.buff, buffOff, len);
         this.curr += len;
         return len;
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        long readfilelen = 0;
+        BufferedRandomAccessFile brafReadFile, brafWriteFile;
+
+        brafReadFile = new BufferedRandomAccessFile(new File("D:\\jit-workspaces.zip"), "rw");
+        readfilelen = brafReadFile.initfilelen;
+        brafWriteFile = new BufferedRandomAccessFile(new File("D:\\jit-001.zip"), "rw", 1047586);
+
+        byte buf[] = new byte[4096];
+        int readcount;
+
+        long start = System.currentTimeMillis();
+
+        while ((readcount = brafReadFile.read(buf)) != -1) {
+            brafWriteFile.write(buf, 0, readcount);
+        }
+
+        brafWriteFile.close();
+        brafReadFile.close();
+
+        System.out.println("BufferedRandomAccessFile Copy & Write File: "
+                + brafReadFile.path
+                + "    FileSize: "
+                + Long.toString( readfilelen >> 1024)
+                + " (KB)    "
+                + "Spend: "
+                + (double) (System.currentTimeMillis() - start) / 1000
+                + "(s)");
+
+//        java.io.FileInputStream fdin = new java.io.FileInputStream("C:\\WINNT\\Fonts\\STKAITI.TTF");
+//        java.io.BufferedInputStream bis = new java.io.BufferedInputStream(fdin, 1024);
+//        java.io.DataInputStream dis = new java.io.DataInputStream(bis);
+//        java.io.FileOutputStream fdout = new java.io.FileOutputStream(".\\STKAITI.002");
+//        java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream(fdout, 1024);
+//        java.io.DataOutputStream dos = new java.io.DataOutputStream(bos);
+//
+//        start = System.currentTimeMillis();
+//
+//        for (int i = 0; i < readfilelen; i++) {
+//            dos.write(dis.readByte());
+//        }
+//
+//        dos.close();
+//        dis.close();
+//
+//        System.out.println("DataBufferedios Copy & Write File: "
+//                + brafReadFile.path
+//                + "    FileSize: "
+//                + Integer.toString((int) readfilelen >> 1024)
+//                + " (KB)    "
+//                + "Spend: "
+//                + (double) (System.currentTimeMillis() - start) / 1000
+//                + "(s)");
     }
 }
 
