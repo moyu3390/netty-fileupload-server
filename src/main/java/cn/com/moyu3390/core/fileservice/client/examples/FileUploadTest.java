@@ -24,7 +24,7 @@ public class FileUploadTest {
 	public static void main(String[] args) {
 		// 如果是自定义配置log4j2.xml路径，在项目启动前需要加载配置，如果log4j2.xml放在了src/main/resources目录下，则不需要
 		String fileName = "config/log/log4j2.xml";
-		LogConfigLoader.init(fileName);
+		LogConfigLoader.initLog4j(fileName);
 		
 		String file2 = "F:\\cn_project_professional_2013_with_sp1_x86_and_x64_dvd_3911523.iso";
 		String file3 = "F:\\jdk-7u80-linux-i586.tar.gz";
