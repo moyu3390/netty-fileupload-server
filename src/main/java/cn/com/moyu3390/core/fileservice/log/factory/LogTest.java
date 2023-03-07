@@ -19,7 +19,7 @@ import org.slf4j.Logger;
  */
 public class LogTest {
     public static void main(String[] args) {
-        for(int i=0;i<50000;i++) {
+        for(int i=0;i<5;i++) {
             Logger logger = JobLog4jFactory.createLogger(i);
             logger.info("Testing testing testing 111");
             logger.debug("Testing testing testing 222");

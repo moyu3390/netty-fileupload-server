@@ -1,8 +1,8 @@
 package cn.com.moyu3390.core.fileservice.log;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.util.StatusPrinter;
+//import ch.qos.logback.classic.LoggerContext;
+//import ch.qos.logback.classic.joran.JoranConfigurator;
+//import ch.qos.logback.core.util.StatusPrinter;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,23 +38,23 @@ public class LogConfigLoader {
 
     }
 
-    /**
-     * 初始化logback配置文件
-     *
-     * @param logFilePath
-     */
-    public static void initLogBack(String logFilePath) {
-        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-        JoranConfigurator joranConfigurator = new JoranConfigurator();
-        joranConfigurator.setContext(loggerContext);
-        loggerContext.reset();
-        try {
-            joranConfigurator.doConfigure(new File(logFilePath));
-        } catch (Exception e) {
-            log.error("Load logback config file error. Message: " + e.getMessage(), e);
-        }
-        StatusPrinter.printInCaseOfErrorsOrWarnings(loggerContext);
-    }
+    ///**
+    // * 初始化logback配置文件
+    // *
+    // * @param logFilePath
+    // */
+    //public static void initLogBack(String logFilePath) {
+    //    LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+    //    JoranConfigurator joranConfigurator = new JoranConfigurator();
+    //    joranConfigurator.setContext(loggerContext);
+    //    loggerContext.reset();
+    //    try {
+    //        joranConfigurator.doConfigure(new File(logFilePath));
+    //    } catch (Exception e) {
+    //        log.error("Load logback config file error. Message: " + e.getMessage(), e);
+    //    }
+    //    StatusPrinter.printInCaseOfErrorsOrWarnings(loggerContext);
+    //}
 
     private LogConfigLoader() {
     }

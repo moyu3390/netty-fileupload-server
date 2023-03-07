@@ -67,7 +67,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.36</version>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.2.11</version>
@@ -76,13 +76,19 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 			<version>1.2.11</version>
-		</dependency>
+		</dependency>-->
 		<!-- 小型java编译器，目的使logback配置文件支持参数 -->
 		<dependency>
 			<groupId>org.codehaus.janino</groupId>
 			<artifactId>janino</artifactId>
 			<version>3.1.7</version>
 			<scope>provided</scope> <!-- 仅运行时使用 -->
+		</dependency>
+		<!-- 2.然后引入slf4j对应log4j2的中间件 -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>2.17.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
 		<dependency>

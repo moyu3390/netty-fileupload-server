@@ -10,7 +10,7 @@ public class ServerStart {
 	public static void main(String[] args) {
 		// 如果是自定义配置 logback.xml路径，在项目启动前需要加载配置，如果 logback.xml放在了src/main/resources目录下，则不需要
 		String fileName = "config/log/logback.xml";
-		LogConfigLoader.initLogBack(fileName);
+		//LogConfigLoader.initLogBack(fileName);
 		FileUploadServer server = new FileUploadServer(host, prot);
 		server.start();
 	}

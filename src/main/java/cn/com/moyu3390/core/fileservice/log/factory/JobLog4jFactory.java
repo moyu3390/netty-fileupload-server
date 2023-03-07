@@ -39,7 +39,7 @@ public class JobLog4jFactory {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         final Configuration config = ctx.getConfiguration();
         //创建一个展示的样式：PatternLayout，   还有其他的日志打印样式。
-        Layout layout =PatternLayout.newBuilder()
+        Layout layout = PatternLayout.newBuilder()
                 .withCharset(Charset.forName("UTF-8"))
                 .withConfiguration(config)
                 .withPattern("%d %t %p %X{TracingMsg} %c - %m%n")
@@ -61,7 +61,6 @@ public class JobLog4jFactory {
                 .build();
 
 
-
         //Appender appender = FileAppender.createAppender(
         //        String.format("logs/test/syncshows-job-%s.log", jobId), "true", "false",
         //        "" + jobId, null, "true", "true", null, layout, null, null, null, config);
@@ -79,8 +78,8 @@ public class JobLog4jFactory {
     public static void stop(int jobId) {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         final Configuration config = ctx.getConfiguration();
-        config.getAppender("" + jobId).stop();
-        config.getLoggerConfig("" + jobId).removeAppender("" + jobId);
+        config.getAppender(jobId + "DomainCntCoreLog").stop();
+        config.getLoggerConfig("" + jobId).removeAppender(jobId + "DomainCntCoreLog");
         config.removeLogger("" + jobId);
         ctx.updateLoggers();
     }
@@ -95,6 +94,7 @@ public class JobLog4jFactory {
      */
     public static Logger createLogger(int jobId) {
         start(jobId);
+
         return LoggerFactory.getLogger("" + jobId);
     }
 }
