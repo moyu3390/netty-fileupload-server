@@ -1,0 +1,797 @@
+
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <!--
+        设置此程序集的标识。这是来自此项目的特定文件组合的符号名称。此外，除了用于通过将生成的归档的值附加到组合包以明确命名组合包之外，该ID在部署时用作工件的分类器。
+    -->
+    <!--string-->
+    <id/>
+    <!--
+        (许多） 指定程序集的格式。通过目标参数而不是在这里指定格式通常会更好。例如，允许不同的配置文件生成不同类型的档案。
+        可以提供多种格式，装配体插件将生成每种所需格式的档案。部署项目时，所有指定的文件格式也将被部署。
+        通过在<format>子元素中提供以下值之一来指定格式：
+        “zip” - 创建一个ZIP文件格式
+        “tar” - 创建一个TAR格式
+        “tar.gz”或“tgz” - 创建一个gzip'd TAR格式
+        “tar.bz2”或“tbz2” - 创建一个bzip'd TAR格式
+        “tar.snappy” - 创建一个灵活的TAR格式
+        “tar.xz”或“txz” - 创建一个xz'd TAR格式
+        “jar” - 创建一个JAR格式
+        “dir” - 创建分解的目录格式
+        “战争” - 创建一个WAR格式
+    -->
+    <!--List<String>-->
+    <formats/>
+    <!--
+        在最终归档中包含一个基本目录。例如，如果您正在创建一个名为“your-app”的程序集，则将includeBaseDirectory设置为true将创建一个包含此基本目录的归档文件。
+        如果此选项设置为false，则创建的存档将其内容解压缩到当前目录。
+        默认值是：true。
+    -->
+    <!--boolean-->
+    <includeBaseDirectory/>
+    <!--
+        设置生成的程序集归档的基本目录。如果没有设置，并且includeBaseDirectory == true，则将使用$ {project.build.finalName}。（从2.2-beta-1开始）
+    -->
+    <!--string-->
+    <baseDirectory/>
+    <!--
+        在最终档案中包含一个网站目录。项目的站点目录位置由Assembly Plugin的siteDirectory参数确定。
+        默认值是：false。
+    -->
+    <!--boolean-->
+    <includeSiteDirectory/>
+
+    <!--
+        （许多） 从常规归档流中过滤各种容器描述符的组件集合，因此可以将它们聚合然后添加。
+    -->
+    <!--List<ContainerDescriptorHandlerConfig>-->
+    <containerDescriptorHandlers>
+        <!--
+            配置文件头部的过滤器，以启用各种类型的描述符片段（如components.xml，web.xml等）的聚合。
+        -->
+        <containerDescriptorHandler>
+            <!--
+                处理程序的plexus角色提示，用于从容器中查找。
+            -->
+            <!--string-->
+            <handlerName/>
+            <!--
+                处理程序的配置选项。
+            -->
+            <!--DOM-->
+            <configuration/>
+        </containerDescriptorHandler>
+    </containerDescriptorHandlers>
+    <!--
+        （许多） 指定在程序集中包含哪些模块文件。moduleSet是通过提供一个或多个<moduleSet>子元素来指定的。
+    -->
+    <!--List<ModuleSet>-->
+    <moduleSets>
+        <!--
+            moduleSet表示一个或多个在项目的pom.xml中存在的<module>项目。这使您可以包含属于项目<modules>的源代码或二进制文件。
+            注意：从命令行使用<moduleSets>时，需要先通过“mvn package assembly：assembly”来传递包阶段。这个bug计划由Maven 2.1解决。
+        -->
+        <moduleSet>
+            <!--
+                如果设置为true，则该插件将包含当前反应堆中的所有项目，以便在此ModuleSet中进行处理。这些将被 纳入/排除(includes/excludes) 规则。（从2.2开始）
+                默认值是：false。
+            -->
+            <!--boolean-->
+            <useAllReactorProjects/>
+            <!--
+                如果设置为false，则该插件将从该ModuleSet中排除子模块的处理。否则，它将处理所有子模块，每个子模块都要遵守包含/排除规则。（从2.2-beta-1开始）
+                默认值是：true。
+            -->
+            <!--boolean-->
+            <includeSubModules/>
+            <!--
+                （许多） 当存在<include>子元素时，它们定义一组包含的项目坐标。如果不存在，则<includes>表示所有有效值。
+                工件坐标可以以简单的groupId：artifactId形式给出，或者可以以groupId：artifactId：type [：classifier]：version的形式完全限定。
+                另外，可以使用通配符，如*：maven- *
+            -->
+            <!--List<String>-->
+            <includes/>
+            <!--
+                （许多） 当存在<exclude>子元素时，它们定义一组要排除的项目工件坐标。如果不存在，则<excludes>不表示排除。
+                工件坐标可以以简单的groupId：artifactId形式给出，或者可以以groupId：artifactId：type [：classifier]：version的形式完全限定。
+                另外，可以使用通配符，如*：maven- *
+            -->
+            <!--List<String>-->
+            <excludes/>
+            <!--
+                当存在这个时，插件将在生成的程序集中包含这个集合中包含的模块的源文件。
+                包含用于在程序集中包含项目模块的源文件的配置选项。
+            -->
+            <!--ModuleSources-->
+            <sources>
+                <!--
+                    在计算受该集合影响的文件时，是否应该使用标准排除模式，例如那些匹配CVS和Subversion元数据文件的排除模式。为了向后兼容，默认值是true。（从2.2-beta-1开始）
+                    默认值是：true。
+                -->
+                <!--boolean-->
+                <useDefaultExcludes/>
+                <!--
+                    设置输出目录相对于程序集根目录的根目录。例如，“日志”将把指定的文件放在日志目录中。
+                -->
+                <!--string-->
+                <outputDirectory/>
+                <!--
+                    （许多） 当<include>子元素存在时，它们定义一组要包含的文件和目录。如果不存在，则<includes>表示所有有效值。
+                -->
+                <!--List<String>-->
+                <includes/>
+                <!--
+                    （许多） 当存在<exclude>子元素时，它们定义一组要排除的文件和目录。如果不存在，则<excludes>不表示排除。
+                -->
+                <!--List<String>-->
+                <excludes/>
+                <!--
+                    与UNIX权限类似，设置所包含文件的文件模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                    例如，值0644转换为用户读写，组和其他只读。默认值是0644
+                -->
+                <!--string-->
+                <fileMode/>
+                <!--
+                    与UNIX权限类似，设置包含的目录的目录模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）[Format: (User)(Group)(Other) ] 其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                    例如，值0755转换为用户读写，Group和其他只读。默认值是0755.
+                -->
+                <!--string-->
+                <directoryMode/>
+                <!--
+                    （许多） 指定包含在程序集中的每个包含模块的哪些文件组。fileSet通过提供一个或多个<fileSet>子元素来指定。（从2.2-beta-1开始）
+                -->
+                <!--List<FileSet>-->
+                <fileSets>
+                    <!--
+                        fileSet允许将文件组包含到程序集中。
+                    -->
+                    <fileSet>
+                        <!--
+                            在计算受该集合影响的文件时，是否应该使用标准排除模式，例如那些匹配CVS和Subversion元数据文件的排除模式。为了向后兼容，默认值是true。（从2.2-beta-1开始）
+                            默认值是：true。
+                        -->
+                        <!--boolean-->
+                        <useDefaultExcludes/>
+                        <!--
+                            设置输出目录相对于程序集根目录的根目录。例如，“日志”将把指定的文件放在日志目录中。
+                        -->
+                        <!--string-->
+                        <outputDirectory/>
+                        <!--
+                            （许多） 当<include>子元素存在时，它们定义一组要包含的文件和目录。如果不存在，则<includes>表示所有有效值。
+                        -->
+                        <!--List<String>-->
+                        <includes/>
+                        <!--
+                            （许多） 当存在<exclude>子元素时，它们定义一组要排除的文件和目录。如果不存在，则<excludes>不表示排除。
+                        -->
+                        <!--List<String>-->
+                        <excludes/>
+                        <!--
+                            与UNIX权限类似，设置所包含文件的文件模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                            例如，值0644转换为用户读写，组和其他只读。默认值是0644.
+                        -->
+                        <!--string-->
+                        <fileMode/>
+                        <!--
+                            与UNIX权限类似，设置包含的目录的目录模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                            例如，值0755转换为用户读写，Group和其他只读。默认值是0755.
+                        -->
+                        <!--string-->
+                        <directoryMode/>
+                        <!--
+                            设置模块目录的绝对或相对位置。例如，“src / main / bin”会选择定义这个依赖关系的项目的这个子目录。
+                        -->
+                        <!--string-->
+                        <directory/>
+                        <!--
+                            设置此文件集中文件的行结束符。有效值：
+                            “keep” - 保留所有的行结束
+                            “unix” - 使用Unix风格的行尾（即“\ n”）
+                            “lf” - 使用一个换行符结束符（即“\ n”）
+                            “dos” - 使用DOS / Windows风格的行尾（即“\ r \ n”）
+                            “windows” - 使用DOS / Windows风格的行尾（即“\ r \ n”）
+                            “crlf” - 使用回车，换行符结尾（即“\ r \ n”）
+                        -->
+                        <!--string-->
+                        <lineEnding/>
+                        <!--
+                            是否在复制文件时过滤符号，使用构建配置中的属性。（从2.2-beta-1开始）
+                            默认值是：false。
+                        -->
+                        <!--boolean-->
+                        <filtered/>
+                    </fileSet>
+                </fileSets>
+                <!--
+                    指定模块的finalName是否应该添加到应用于它的任何fileSets的outputDirectory值。（从2.2-beta-1开始）
+                    默认值是：true。
+                -->
+                <!--boolean-->
+                <includeModuleDirectory/>
+                <!--
+                    指定是否应从应用于该模块的文件集中排除当前模块下方的子模块目录。如果仅仅意味着复制与此ModuleSet匹配的确切模块列表的源，忽略（或单独处理）当前目录下目录中存在的模块，这可能会很有用。（从2.2-beta-1开始）
+                    默认值是：true。
+                -->
+                <!--boolean-->
+                <excludeSubModuleDirectories/>
+                <!--
+                    设置此程序集中包含的所有模块基本目录的映射模式。注意：只有在includeModuleDirectory == true的情况下才会使用此字段。
+                    缺省值是在 2.2-beta-1中是$ {artifactId}，以及后续版本中是$ {module.artifactId}。（从2.2-beta-1开始）
+                    默认值是：$ {module.artifactId}。
+                -->
+                <!--string-->
+                <outputDirectoryMapping/>
+            </sources>
+            <!--
+                    如果存在，插件将在生成的程序集中包含来自该组的所包含模块的二进制文件。
+                    包含用于将项目模块的二进制文件包含在程序集中的配置选项。
+            -->
+            <!--ModuleBinaries-->
+            <binaries>
+                <!--
+                    设置输出目录相对于程序集根目录的根目录。例如，“log”会将指定的文件放在归档根目录下的日志目录中。
+                -->
+                <!--string-->
+                <outputDirectory/>
+                <!--
+                    （许多） 当存在<include>子元素时，它们定义一组要包含的工件坐标。如果不存在，则<includes>表示所有有效值。
+                    工件坐标可以以简单的groupId：artifactId形式给出，或者可以以groupId：artifactId：type [：classifier]：version的形式完全限定。
+                    另外，可以使用通配符，如*：maven- *
+                -->
+                <!--List<String>-->
+                <includes/>
+                <!--
+                    （许多） 当存在<exclude>子元素时，它们定义一组依赖项工件坐标以排除。如果不存在，则<excludes>不表示排除。
+                    工件坐标可以以简单的groupId：artifactId形式给出，或者可以以groupId：artifactId：type [：classifier]：version的形式完全限定。
+                    另外，可以使用通配符，如*：maven- *
+                -->
+                <!--List<String>-->
+                <excludes/>
+                <!--
+                    与UNIX权限类似，设置所包含文件的文件模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                    例如，值0644转换为用户读写，组和其他只读。默认值是0644
+                -->
+                <!--string-->
+                <fileMode/>
+                <!--
+                    与UNIX权限类似，设置包含的目录的目录模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）[Format: (User)(Group)(Other) ] 其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                    例如，值0755转换为用户读写，Group和其他只读。默认值是0755.
+                -->
+                <!--string-->
+                <directoryMode/>
+                <!--
+                    指定时，attachmentClassifier将使汇编器查看附加到模块的工件，而不是主工程工件。如果能够找到与指定分类符匹配的附件，则会使用它; 否则，会抛出异常。（从2.2-beta-1开始）
+                -->
+                <!--string-->
+                <attachmentClassifier/>
+                <!--
+                    如果设置为true，插件将包含这里包含的项目模块的直接和传递依赖关系。否则，它将只包含模块包。
+                    默认值是：true。
+                -->
+                <!--boolean-->
+                <includeDependencies/>
+                <!--List<DependencySet>-->
+                <dependencySets>
+                    <!--
+                        依赖关系集允许在程序集中包含和排除项目依赖关系。
+                    -->
+                    <dependencySet>
+                        <!--
+                                设置输出目录相对于程序集根目录的根目录。例如，“log”会将指定的文件放在归档根目录下的日志目录中。
+                            -->
+                        <!--string-->
+                        <outputDirectory/>
+                        <!--
+                            （许多） 当存在<include>子元素时，它们定义一组要包含的工件坐标。如果不存在，则<includes>表示所有有效值。
+                            工件坐标可以以简单的groupId：artifactId形式给出，或者可以以groupId：artifactId：type [：classifier]：version的形式完全限定。
+                            另外，可以使用通配符，如*：maven- *
+                        -->
+                        <!--List<String>-->
+                        <includes/>
+                        <!--
+                            （许多） 当存在<exclude>子元素时，它们定义一组依赖项工件坐标以排除。如果不存在，则<excludes>不表示排除。
+                            工件坐标可以以简单的groupId：artifactId形式给出，或者可以以groupId：artifactId：type [：classifier]：version的形式完全限定。
+                            另外，可以使用通配符，如*：maven- *
+                        -->
+                        <!--List<String>-->
+                        <excludes/>
+                        <!--
+                            与UNIX权限类似，设置所包含文件的文件模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                            例如，值0644转换为用户读写，组和其他只读。默认值是0644
+                        -->
+                        <!--string-->
+                        <fileMode/>
+                        <!--
+                            与UNIX权限类似，设置包含的目录的目录模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）[Format: (User)(Group)(Other) ] 其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                            例如，值0755转换为用户读写，Group和其他只读。默认值是0755.
+                        -->
+                        <!--string-->
+                        <directoryMode/>
+                        <!--
+                            如果指定为true，那么在程序集创建过程中任何用于过滤实际构件的包含/排除模式都将导致构建失败，并显示错误。这是为了强调过时的包含或排除，或者表示程序集描述符配置不正确。（从2.2开始）
+                            默认值是：false。
+                        -->
+                        <!--boolean-->
+                        <useStrictFiltering/>
+                        <!--
+                            为此程序集中包含的所有依赖项设置映射模式。（从2.2-beta-2开始； 2.2-beta-1使用$ {artifactId} - $ {version} $ {dashClassifier？}。$ {extension}作为默认值）。
+                            默认值是：$ {artifact.artifactId} - $ {artifact.version} $ {dashClassifier？}。$ {artifact.extension}。
+                        -->
+                        <!--string-->
+                        <outputFileNameMapping/>
+                        <!--
+                            如果设置为true，则此属性将所有依赖项解包到指定的输出目录中。设置为false时，依赖关系将被包含为档案（jar）。只能解压jar，zip，tar.gz和tar.bz压缩文件。
+                            默认值是：false。
+                        -->
+                        <!--boolean-->
+                        <unpack/>
+                        <!--
+                            允许指定包含和排除以及过滤选项，以指定从相关性工件解压缩的项目。（从2.2-beta-1开始）
+                        -->
+                        <unpackOptions>
+                            <!--
+                                （许多） 文件和/或目录模式的集合，用于匹配将在解压缩时从归档文件中包含的项目。每个项目被指定为<include> some / path </ include>（从2.2-beta-1开始）
+                            -->
+                            <!--List<String>-->
+                            <includes/>
+                            <!--
+                                （许多） 用于匹配项目的文件和/或目录模式的集合，在解压缩时将其从归档文件中排除。每个项目被指定为<exclude> some / path </ exclude>（从2.2-beta-1开始）
+                            -->
+                            <!--List<String>-->
+                            <excludes/>
+                            <!--
+                                是否使用构建配置中的属性过滤从档案中解压缩的文件中的符号。（从2.2-beta-1开始）
+                                默认值是：false。
+                            -->
+                            <!--boolean-->
+                            <filtered/>
+                            <!--
+                                设置文件的行尾。（从2.2开始）有效值：
+                                “keep” - 保留所有的行结束
+                                “unix” - 使用Unix风格的行结尾
+                                “lf” - 使用单个换行符结束符
+                                “dos” - 使用DOS风格的行尾
+                                “ crlf ” - 使用Carraige返回，换行符结束
+                            -->
+                            <!--string-->
+                            <lineEnding/>
+                            <!--
+                                在计算受该集合影响的文件时，是否应该使用标准排除模式，例如那些匹配CVS和Subversion元数据文件的排除模式。为了向后兼容，默认值是true。（从2.2开始）
+                                默认值是：true。
+                            -->
+                            <!--boolean-->
+                            <useDefaultExcludes/>
+                            <!--
+                                允许指定解压档案时使用的编码，支持指定编码的unarchiver。如果未指定，将使用归档程序默认值。Archiver默认值通常代表理智（modern）的values。
+                            -->
+                            <!--string-->
+                            <encoding/>
+                        </unpackOptions>
+                        <!--
+                            为此dependencySet设置依赖项范围。
+                            默认值是：runtime。
+                        -->
+                        <!--string-->
+                        <scope/>
+                        <!--
+                            确定当前项目构建过程中产生的工件是否应该包含在这个依赖集中。（从2.2-beta-1开始）
+                            默认值是：true。
+                        -->
+                        <!--boolean-->
+                        <useProjectArtifact/>
+                        <!--
+                            确定当前项目构建过程中产生的附件是否应该包含在这个依赖集中。（从2.2-beta-1开始）
+                            默认值是：false。
+                        -->
+                        <!--boolean-->
+                        <useProjectAttachments/>
+                        <!--
+                            确定是否将传递依赖项包含在当前依赖项集的处理中。如果为true，那么include / excludes / useTransitiveFiltering将应用于传递依赖项构件以及主项目依赖项构件。
+                            如果为false，则useTransitiveFiltering无意义，并且包含/排除仅影响项目的直接依赖关系。
+                            默认情况下，这个值是真的。（从2.2-beta-1开始）
+                            默认值是：true。
+                        -->
+                        <!--boolean-->
+                        <useTransitiveDependencies/>
+                        <!--
+                            确定此依赖项集中的包含/排除模式是否将应用于给定工件的传递路径。
+                            如果为真，并且当前工件是由包含或排除模式匹配的另一个工件引入的传递依赖性，则当前工件具有与其相同的包含/排除逻辑。
+                            默认情况下，此值为false，以保持与2.1版的向后兼容性。这意味着包含/排除仅仅直接应用于当前的工件，而不应用于传入的工件。（从2.2-beta-1）
+                            默认值为：false。
+                        -->
+                        <!--boolean-->
+                        <useTransitiveFiltering/>
+                    </dependencySet>
+                </dependencySets>
+                <!--
+                    如果设置为true，则此属性将所有模块包解包到指定的输出目录中。当设置为false时，模块包将作为归档（jar）包含在内。
+                    默认值是：true。
+                -->
+                <!--boolean-->
+                <unpack/>
+                <!--
+                    允许指定包含和排除以及过滤选项，以指定从相关性工件解压缩的项目。（从2.2-beta-1开始）
+                -->
+                <unpackOptions>
+                    <!--
+                        （许多） 文件和/或目录模式的集合，用于匹配将在解压缩时从归档文件中包含的项目。每个项目被指定为<include> some / path </ include>（从2.2-beta-1开始）
+                    -->
+                    <!--List<String>-->
+                    <includes/>
+                    <!--
+                        （许多） 用于匹配项目的文件和/或目录模式的集合，在解压缩时将其从归档文件中排除。每个项目被指定为<exclude> some / path </ exclude>（从2.2-beta-1开始）
+                    -->
+                    <!--List<String>-->
+                    <excludes/>
+                    <!--
+                        是否使用构建配置中的属性过滤从档案中解压缩的文件中的符号。（从2.2-beta-1开始）
+                        默认值是：false。
+                    -->
+                    <!--boolean-->
+                    <filtered/>
+                    <!--
+                        设置文件的行尾。（从2.2开始）有效值：
+                        “keep” - 保留所有的行结束
+                        “unix” - 使用Unix风格的行结尾
+                        “lf” - 使用单个换行符结束符
+                        “dos” - 使用DOS风格的行尾
+                        “ crlf ” - 使用Carraige返回，换行符结束
+                    -->
+                    <!--string-->
+                    <lineEnding/>
+                    <!--
+                        在计算受该集合影响的文件时，是否应该使用标准排除模式，例如那些匹配CVS和Subversion元数据文件的排除模式。为了向后兼容，默认值是true。（从2.2开始）
+                        默认值是：true。
+                    -->
+                    <!--boolean-->
+                    <useDefaultExcludes/>
+                    <!--
+                        允许指定解压档案时使用的编码，支持指定编码的unarchiver。如果未指定，将使用归档程序默认值。Archiver默认值通常代表理智（modern）的values。
+                    -->
+                    <!--string-->
+                    <encoding/>
+                </unpackOptions>
+                <!--
+                    设置此程序集中包含的所有非UNPACKED依赖关系的映射模式。（由于2.2-beta-2; 2.2-beta-1使用$ {artifactId} - $ {version} $ {dashClassifier？}。$ {extension}作为默认值）注意：如果dependencySet指定unpack == true，则outputFileNameMapping将不要使用; 在这些情况下，使用outputDirectory。有关可用于outputFileNameMapping参数的条目的更多详细信息，请参阅插件FAQ。
+                    默认值是：$ {module.artifactId} - $ {module.version} $ {dashClassifier？}。$ {module.extension}。
+                -->
+                <!--string-->
+                <outputFileNameMapping/>
+            </binaries>
+        </moduleSet>
+    </moduleSets>
+    <!--
+        （许多） 指定在程序集中包含哪些文件组。fileSet通过提供一个或多个<fileSet>子元素来指定。
+    -->
+    <!--List<FileSet>-->
+    <fileSets>
+        <!--
+            fileSet允许将文件组包含到程序集中。
+        -->
+        <fileSet>
+            <!--
+                在计算受该集合影响的文件时，是否应该使用标准排除模式，例如那些匹配CVS和Subversion元数据文件的排除模式。为了向后兼容，默认值是true。（从2.2-beta-1开始）
+                默认值是：true。
+            -->
+            <!--boolean-->
+            <useDefaultExcludes/>
+            <!--
+                设置输出目录相对于程序集根目录的根目录。例如，“日志”将把指定的文件放在日志目录中。
+            -->
+            <!--string-->
+            <outputDirectory/>
+            <!--
+                （许多） 当<include>子元素存在时，它们定义一组要包含的文件和目录。如果不存在，则<includes>表示所有有效值。
+            -->
+            <!--List<String>-->
+            <includes/>
+            <!--
+                （许多） 当存在<exclude>子元素时，它们定义一组要排除的文件和目录。如果不存在，则<excludes>不表示排除。
+            -->
+            <!--List<String>-->
+            <excludes/>
+            <!--
+                与UNIX权限类似，设置所包含文件的文件模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                例如，值0644转换为用户读写，组和其他只读。默认值是0644.
+            -->
+            <!--string-->
+            <fileMode/>
+            <!--
+                与UNIX权限类似，设置包含的目录的目录模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                例如，值0755转换为用户读写，Group和其他只读。默认值是0755.
+            -->
+            <!--string-->
+            <directoryMode/>
+            <!--
+                设置模块目录的绝对或相对位置。例如，“src / main / bin”会选择定义这个依赖关系的项目的这个子目录。
+            -->
+            <!--string-->
+            <directory/>
+            <!--
+                设置此文件集中文件的行结束符。有效值：
+                “keep” - 保留所有的行结束
+                “unix” - 使用Unix风格的行尾（即“\ n”）
+                “lf” - 使用一个换行符结束符（即“\ n”）
+                “dos” - 使用DOS / Windows风格的行尾（即“\ r \ n”）
+                “windows” - 使用DOS / Windows风格的行尾（即“\ r \ n”）
+                “crlf” - 使用回车，换行符结尾（即“\ r \ n”）
+            -->
+            <!--string-->
+            <lineEnding/>
+            <!--
+                是否在复制文件时过滤符号，使用构建配置中的属性。（从2.2-beta-1开始）
+                默认值是：false。
+            -->
+            <!--boolean-->
+            <filtered/>
+        </fileSet>
+    </fileSets>
+    <!--
+        （许多） 指定在程序集中包含哪些单个文件。通过提供一个或多个<file>子元素来指定文件。
+    -->
+    <!--List<FileItem>-->
+    <files>
+        <!--
+            一个文件允许单个文件包含选项来更改不受fileSets支持的目标文件名。
+        -->
+        <file>
+            <!--
+                设置要包含在程序集中的文件的模块目录的绝对路径或相对路径。
+            -->
+            <!--string-->
+            <source/>
+            <!--
+                设置输出目录相对于程序集根目录的根目录。例如，“日志”将把指定的文件放在日志目录中。
+            -->
+            <!--string-->
+            <outputDirectory/>
+            <!--
+                在outputDirectory中设置目标文件名。默认是与源文件相同的名称。
+            -->
+            <!--string-->
+            <destName/>
+            <!--
+                与UNIX权限类似，设置所包含文件的文件模式。这是一个八卦价值。格式：（用户）（组）（其他）其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                例如，值0644转换为用户读写，组和其他只读。默认值是0644
+            -->
+            <!--string-->
+            <fileMode/>
+            <!--
+                设置此文件中文件的行结束符。有效值是：
+                “keep” - 保留所有的行结束
+                “unix” - 使用Unix风格的行尾（即“\ n”）
+                “lf” - 使用一个换行符结束符（即“\ n”）
+                “dos” - 使用DOS / Windows风格的行尾（即“\ r \ n”）
+                “windows” - 使用DOS / Windows风格的行尾（即“\ r \ n”）
+                “crlf” - 使用回车，换行符结尾（即“\ r \ n”）
+            -->
+            <!--string-->
+            <lineEnding/>
+            <!--
+                设置是否确定文件是否被过滤。
+                默认值是：false。
+            -->
+            <!--boolean-->
+            <filtered/>
+        </file>
+    </files>
+    <!--List<DependencySet>-->
+    <dependencySets>
+        <!--
+            依赖关系集允许在程序集中包含和排除项目依赖关系。
+        -->
+        <dependencySet>
+            <!--
+                    设置输出目录相对于程序集根目录的根目录。例如，“log”会将指定的文件放在归档根目录下的日志目录中。
+                -->
+            <!--string-->
+            <outputDirectory/>
+            <!--
+                （许多） 当存在<include>子元素时，它们定义一组要包含的工件坐标。如果不存在，则<includes>表示所有有效值。
+                工件坐标可以以简单的groupId：artifactId形式给出，或者可以以groupId：artifactId：type [：classifier]：version的形式完全限定。
+                另外，可以使用通配符，如*：maven- *
+            -->
+            <!--List<String>-->
+            <includes/>
+            <!--
+                （许多） 当存在<exclude>子元素时，它们定义一组依赖项工件坐标以排除。如果不存在，则<excludes>不表示排除。
+                工件坐标可以以简单的groupId：artifactId形式给出，或者可以以groupId：artifactId：type [：classifier]：version的形式完全限定。
+                另外，可以使用通配符，如*：maven- *
+            -->
+            <!--List<String>-->
+            <excludes/>
+            <!--
+                与UNIX权限类似，设置所包含文件的文件模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                例如，值0644转换为用户读写，组和其他只读。默认值是0644
+            -->
+            <!--string-->
+            <fileMode/>
+            <!--
+                与UNIX权限类似，设置包含的目录的目录模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）[Format: (User)(Group)(Other) ] 其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                例如，值0755转换为用户读写，Group和其他只读。默认值是0755.
+            -->
+            <!--string-->
+            <directoryMode/>
+            <!--
+                如果指定为true，那么在程序集创建过程中任何用于过滤实际构件的包含/排除模式都将导致构建失败，并显示错误。这是为了强调过时的包含或排除，或者表示程序集描述符配置不正确。（从2.2开始）
+                默认值是：false。
+            -->
+            <!--boolean-->
+            <useStrictFiltering/>
+            <!--
+                为此程序集中包含的所有依赖项设置映射模式。（从2.2-beta-2开始； 2.2-beta-1使用$ {artifactId} - $ {version} $ {dashClassifier？}。$ {extension}作为默认值）。
+                默认值是：$ {artifact.artifactId} - $ {artifact.version} $ {dashClassifier？}。$ {artifact.extension}。
+            -->
+            <!--string-->
+            <outputFileNameMapping/>
+            <!--
+                如果设置为true，则此属性将所有依赖项解包到指定的输出目录中。设置为false时，依赖关系将被包含为档案（jar）。只能解压jar，zip，tar.gz和tar.bz压缩文件。
+                默认值是：false。
+            -->
+            <!--boolean-->
+            <unpack/>
+            <!--
+                允许指定包含和排除以及过滤选项，以指定从相关性工件解压缩的项目。（从2.2-beta-1开始）
+            -->
+            <unpackOptions>
+                <!--
+                    （许多） 文件和/或目录模式的集合，用于匹配将在解压缩时从归档文件中包含的项目。每个项目被指定为<include> some / path </ include>（从2.2-beta-1开始）
+                -->
+                <!--List<String>-->
+                <includes/>
+                <!--
+                    （许多） 用于匹配项目的文件和/或目录模式的集合，在解压缩时将其从归档文件中排除。每个项目被指定为<exclude> some / path </ exclude>（从2.2-beta-1开始）
+                -->
+                <!--List<String>-->
+                <excludes/>
+                <!--
+                    是否使用构建配置中的属性过滤从档案中解压缩的文件中的符号。（从2.2-beta-1开始）
+                    默认值是：false。
+                -->
+                <!--boolean-->
+                <filtered/>
+                <!--
+                    设置文件的行尾。（从2.2开始）有效值：
+                    “keep” - 保留所有的行结束
+                    “unix” - 使用Unix风格的行结尾
+                    “lf” - 使用单个换行符结束符
+                    “dos” - 使用DOS风格的行尾
+                    “crlf ” - 使用Carraige返回，换行符结束
+                -->
+                <!--string-->
+                <lineEnding/>
+                <!--
+                    在计算受该集合影响的文件时，是否应该使用标准排除模式，例如那些匹配CVS和Subversion元数据文件的排除模式。为了向后兼容，默认值是true。（从2.2开始）
+                    默认值是：true。
+                -->
+                <!--boolean-->
+                <useDefaultExcludes/>
+                <!--
+                    允许指定解压档案时使用的编码，支持指定编码的unarchiver。如果未指定，将使用归档程序默认值。Archiver默认值通常代表理智（modern）的values。
+                -->
+                <!--string-->
+                <encoding/>
+            </unpackOptions>
+            <!--
+                为此dependencySet设置依赖项范围。
+                默认值是：runtime。
+            -->
+            <!--string-->
+            <scope/>
+            <!--
+                确定当前项目构建过程中产生的工件是否应该包含在这个依赖集中。（从2.2-beta-1开始）
+                默认值是：true。
+            -->
+            <!--boolean-->
+            <useProjectArtifact/>
+            <!--
+                确定当前项目构建过程中产生的附件是否应该包含在这个依赖集中。（从2.2-beta-1开始）
+                默认值是：false。
+            -->
+            <!--boolean-->
+            <useProjectAttachments/>
+            <!--
+                确定是否将传递依赖项包含在当前依赖项集的处理中。如果为true，那么include / excludes / useTransitiveFiltering将应用于传递依赖项构件以及主项目依赖项构件。
+                如果为false，则useTransitiveFiltering无意义，并且包含/排除仅影响项目的直接依赖关系。
+                默认情况下，这个值是真的。（从2.2-beta-1开始）
+                默认值是：true。
+            -->
+            <!--boolean-->
+            <useTransitiveDependencies/>
+            <!--
+                确定此依赖项集中的包含/排除模式是否将应用于给定工件的传递路径。
+                如果为真，并且当前工件是由包含或排除模式匹配的另一个工件引入的传递依赖性，则当前工件具有与其相同的包含/排除逻辑。
+                默认情况下，此值为false，以保持与2.1版的向后兼容性。这意味着包含/排除仅仅直接应用于当前的工件，而不应用于传入的工件。（从2.2-beta-1）
+                默认值为：false。
+            -->
+            <!--boolean-->
+            <useTransitiveFiltering/>
+        </dependencySet>
+    </dependencySets>
+    <!--
+        定义要包含在程序集中的Maven仓库。可用于存储库中的工件是项目的依赖工件。创建的存储库包含所需的元数据条目，并且还包含sha1和md5校验和。这对创建将被部署到内部存储库的档案很有用。
+        注意：目前，只有来自中央存储库的工件才被允许。
+    -->
+    <!--List<Repository>-->
+    <repositories>
+        <repository>
+            <!--
+                设置输出目录相对于程序集根目录的根目录。例如，“log”会将指定的文件放在归档根目录下的日志目录中。
+            -->
+            <!--string-->
+            <outputDirectory/>
+            <!--
+                （许多） 当存在<include>子元素时，它们定义一组包含的项目坐标。如果不存在，则<includes>表示所有有效值。
+                工件坐标可以以简单的groupId：artifactId形式给出，或者可以以groupId：artifactId：type [：classifier]：version的形式完全限定。
+                另外，可以使用通配符，如*：maven- *
+            -->
+            <!--List<String>-->
+            <includes/>
+            <!--
+                （许多） 当存在<exclude>子元素时，它们定义一组要排除的项目工件坐标。如果不存在，则<excludes>不表示排除。
+                工件坐标可以以简单的groupId：artifactId形式给出，或者可以以groupId：artifactId：type [：classifier]：version的形式完全限定。
+                另外，可以使用通配符，如*：maven- *
+            -->
+            <!--List<String>-->
+            <excludes/>
+            <!--
+                    与UNIX权限类似，设置所包含文件的文件模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                    例如，值0644转换为用户读写，组和其他只读。默认值是0644
+                -->
+            <!--string-->
+            <fileMode/>
+            <!--
+                与UNIX权限类似，设置包含的目录的目录模式。这是一个 OCTAL VALUE。格式：（用户）（组）（其他）[Format: (User)(Group)(Other) ] 其中每个组件是Read = 4，Write = 2和Execute = 1的总和。
+                例如，值0755转换为用户读写，Group和其他只读。默认值是0755.
+            -->
+            <!--string-->
+            <directoryMode/>
+            <!--
+                如果设置为true，则此属性将触发创建存储库元数据，这将允许存储库用作功能性远程存储库。
+                默认值是：false。
+            -->
+            <!--boolean-->
+            <includeMetadata/>
+            <!--
+                （许多） 指定要将一组工件与指定的版本对齐。groupVersionAlignment通过提供一个或多个<groupVersionAlignment>子元素来指定。
+                允许一组工件与指定的版本对齐。
+            -->
+            <!--List<GroupVersionAlignment>-->
+            <groupVersionAlignments>
+                <groupVersionAlignment>
+                    <!--
+                        要为其对齐版本的工件的groupId。
+                    -->
+                    <!--string-->
+                    <id/>
+                    <!--
+                        您想要将该组对齐的版本。
+                    -->
+                    <!--string-->
+                    <version/>
+                    <!--
+                        （许多） 当存在<exclude>子元素时，它们定义要排除的构件的artifactIds。如果不存在，则<excludes>不表示排除。排除是通过提供一个或多个<exclude>子元素来指定的。
+                    -->
+                    <!--List<String>-->
+                    <excludes/>
+                </groupVersionAlignment>
+            </groupVersionAlignments>
+            <!--
+                指定此存储库中包含的工件的范围。（从2.2-beta-1开始）
+                默认值是：runtime。
+            -->
+            <!--string-->
+            <scope/>
+        </repository>
+    </repositories>
+    <!--
+        （许多） 指定要包含在程序集中的共享组件xml文件位置。指定的位置必须相对于描述符的基本位置。
+        如果描述符是通过类路径中的<descriptorRef />元素找到的，那么它指定的任何组件也将在类路径中找到。
+        如果通过路径名通过<descriptor />元素找到，则此处的值将被解释为相对于项目basedir的路径。
+        当找到多个componentDescriptors时，它们的内容被合并。检查 描述符组件 了解更多信息。
+        componentDescriptor通过提供一个或多个<componentDescriptor>子元素来指定。
+    -->
+    <!--List<String>-->
+    <componentDescriptors/>
+</assembly>
