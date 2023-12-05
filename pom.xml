@@ -82,7 +82,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-			<version>1.2.11</version>
+			<version>1.2.13</version>
 		</dependency>
 		<!-- 小型java编译器，目的使logback配置文件支持参数 -->
 		<dependency>
